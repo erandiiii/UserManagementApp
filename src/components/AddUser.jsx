@@ -1,69 +1,82 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import './AddUser.scss';
 
 function AddUser({ onAdd }) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [company, setCompany] = useState("");
-  const navigate = useNavigate();
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [company, setCompany] = useState("");
+    const [message, setMessage] = useState("");   
+    const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // ✅ prevent page refresh
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-    if (!name || !email) {
-      alert("Name and Email are required!");
-      return;
-    }
+        if (!name || !email) {
+            setMessage("⚠️ Name and Email are required!");
+            return;
+        }
 
-    const newUser = {
-      id: Date.now(), // unique local id
-      name,
-      email,
-      company: { name: company || "N/A" },
+        const newUser = {
+            id: Date.now(),
+            name,
+            email,
+            company: { name: company || "N/A" },
+        };
+
+        onAdd(newUser);
+        setMessage(`✅ New user created: ${newUser.name} (${newUser.email})`);
+
+        setName("");
+        setEmail("");
+        setCompany("");
+
+        
+        setTimeout(() => {
+            navigate("/users");
+        }, 2500);
     };
 
-    console.log("New user created:", newUser); // ✅ debug log
-    onAdd(newUser); // ✅ update App state
-    navigate("/users"); // ✅ go back to list
-  };
+    return (
+        <div className="form-container">
+            <h2>Add User</h2>
 
-  return (
-    <div style={{ padding: "20px" }}>
-      <h2>Add User</h2>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: "300px",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Company"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-        />
-        <button type="submit" style={{ marginTop: "10px" }}>
-          Add User
-        </button>
-      </form>
-    </div>
-  );
+            {message && <div className="custom-alert">{message}</div>}
+
+            <form
+                onSubmit={handleSubmit}
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "300px",
+                }}
+            >
+                <input
+                    type="text"
+                    placeholder="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Company"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                />
+                <button type="submit">
+                    Add User
+                </button>
+            </form>
+        </div>
+    );
 }
 
 export default AddUser;

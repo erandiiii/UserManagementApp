@@ -1,18 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import './Navbar.scss'
 
 function Navbar() {
     return (
-        <nav style={{ background: "#2c3e50", padding: "10px" }}>
-            {/* <Link to="/" style={{ color: "#fff", marginRight: "15px" }}>
-                Home
-            </Link> */}
-            <Link to="/users" style={{ color: "#fff" }}>
-                Users
+        <nav className="n-container">
+            <Link to="/" className="logo">
+                <h1>UserManagement</h1>
             </Link>
-            <Link to="/add-user" style={{ color: "white", textDecoration: "none" }}>
-                Add User
-            </Link>
+            <div className="nav-links">
+                <Link to="/users">
+                    Users
+                </Link>
+                <Link to="/add-user">
+                    Add User
+                </Link>
+            </div>
 
         </nav>
     );
